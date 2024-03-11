@@ -1,1 +1,62 @@
 # Steps to install RKE2
+---
+
+- name: Install RKE2 on master node
+  ansible.builtin.shell: |
+    curl -sfL https://get.rke2.io | sh -
+    while [ ! -f /var/lib/rancher/rke2/server/node-token ]; do sleep 5; done
+  when: inventory_hostname == 'master1'
+  become: yes
+  notify:
+    - Restart rke2-server
+
+- name: Ensure RKE2 server is enabled and running
+  ansible.builtin.systemd:
+    name: rke2-server
+    enabled: yes
+    state: started
+  when: inventory_hostname == 'master1'
+  become: yes
+
+- name: Wait for RKE2 server to become ready
+  ansible.builtin.wait_for:
+    path: /var/lib/rancher/rke2/server/node-token
+    state: present
+  when: inventory_hostname == 'master1'
+  become: yes
+  retries: 5
+  delay: 10
+
+- name: Fetch RKE2 node token from master
+  ansible.builtin.slurp:
+    src: /var/lib/rancher/rke2/server/node-token
+  register: rke2_node_token
+  when: inventory_hostname == 'master1'
+  become: yes
+  run_once: true
+
+- name: Install RKE2 on worker nodes
+  ansible.builtin.shell: |
+    curl -sfL https://get.rke2.io | INSTALL_RKE2_TYPE='agent' sh -
+  when: inventory_hostname in ['worker1', 'worker2']
+  become: yes
+  notify:
+    - Restart rke2-agent
+
+- name: Set up RKE2 agent environment file on worker nodes
+  ansible.builtin.template:
+    src: rke2_agent_config.j2
+    dest: /etc/rancher/rke2/config.yaml
+  vars:
+    master_ip: "{{ hostvars['master1'].ansible_host }}"
+    master_token: "{{ rke2_node_token.content | b64decode }}"
+  when: inventory_hostname in ['worker1', 'worker2']
+  become: yes
+
+- name: Ensure RKE2 agent is enabled and running
+  ansible.builtin.systemd:
+    name: rke2-agent
+    enabled: yes
+    state: started
+  when: inventory_hostname in ['worker1', 'worker2']
+  become: yes

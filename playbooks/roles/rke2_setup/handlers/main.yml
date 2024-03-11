@@ -1,0 +1,14 @@
+---
+
+handlers:
+  - name: Restart rke2-server
+    ansible.builtin.systemd:
+      name: rke2-server
+      state: restarted
+    become: yes
+
+  - name: Restart rke2-agent
+    ansible.builtin.systemd:
+      name: rke2-agent
+      state: restarted
+    become: yes

@@ -1,6 +1,6 @@
 # Check system requirements: CPU and RAM
-
 ---
+
 - name: Check minimum CPU requirements
   ansible.builtin.command: grep -c ^processor /proc/cpuinfo
   register: cpu_count
