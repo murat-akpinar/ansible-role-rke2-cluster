@@ -1,8 +1,6 @@
-- name: Update /etc/motd with welcome message
+- name: Create welcome message script in update-motd.d
   ansible.builtin.template:
     src: welcome.j2
-    dest: /etc/motd
-    owner: root
-    group: root
-    mode: '0644'
+    dest: /etc/update-motd.d/99-welcome 
+    mode: '0755'
   become: yes

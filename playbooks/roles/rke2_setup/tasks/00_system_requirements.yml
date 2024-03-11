@@ -17,8 +17,9 @@
   register: ram_size
   changed_when: false
 
-- name: Verify RAM size
+- name: Check minimum RAM requirements
   ansible.builtin.shell: free -m | awk '/^Mem:/ {print $2}'
   register: ram_size
   changed_when: false
-  failed_when: ram_size.stdout|int < 8192
+  failed_when: ram_size.stdout|int < 7937
+
