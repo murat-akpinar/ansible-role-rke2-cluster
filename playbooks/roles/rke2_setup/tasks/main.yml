@@ -7,11 +7,10 @@
   ansible.builtin.import_tasks: 01_install_rke2.yml
 
 - name: "Install MetalLB" 
-  ansible.builtin.import_tasks: 01_install_rke2.yml
+  ansible.builtin.import_tasks: 02_install_metallb.yml
 
 - name: "Install Longhorn" 
-  ansible.builtin.import_tasks: 01_install_rke2.yml
+  ansible.builtin.import_tasks: 03_install_longhorn.yml
 
-- name: "Install RKE2" 
-  ansible.builtin.import_tasks: 01_install_rke2.yml
-
+- name: "Wellcome Message" 
+  ansible.builtin.import_tasks: 04_wellcome.yml
