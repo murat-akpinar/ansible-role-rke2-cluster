@@ -1,1 +1,17 @@
 # Main tasks for RKE2 setup
+---
+- name: "System requirements Check" 
+  ansible.builtin.import_tasks: 00_system_requirements.yml
+
+- name: "Install RKE2" 
+  ansible.builtin.import_tasks: 01_install_rke2.yml
+
+- name: "Install MetalLB" 
+  ansible.builtin.import_tasks: 01_install_rke2.yml
+
+- name: "Install Longhorn" 
+  ansible.builtin.import_tasks: 01_install_rke2.yml
+
+- name: "Install RKE2" 
+  ansible.builtin.import_tasks: 01_install_rke2.yml
+
