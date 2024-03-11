@@ -1,6 +1,5 @@
 ---
 
-handlers:
   - name: Restart rke2-server
     ansible.builtin.systemd:
       name: rke2-server

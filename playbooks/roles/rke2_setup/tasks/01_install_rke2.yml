@@ -3,8 +3,7 @@
 
 - name: Install RKE2 on master node
   ansible.builtin.shell: |
-    curl -sfL https://get.rke2.io | sh -
-    while [ ! -f /var/lib/rancher/rke2/server/node-token ]; do sleep 5; done
+    curl -sfL https://get.rke2.io | INSTALL_RKE2_TYPE=server sh -
   when: inventory_hostname == 'master1'
   become: yes
   notify:
@@ -45,11 +44,21 @@
 
 - name: Set up RKE2 agent environment file on worker nodes
   ansible.builtin.template:
-    src: rke2_agent_config.j2
+    src: templates/rke2_agent_config.j2
     dest: /etc/rancher/rke2/config.yaml
   vars:
     master_ip: "{{ hostvars['master1'].ansible_host }}"
     master_token: "{{ rke2_node_token.content | b64decode }}"
+  when: inventory_hostname in ['worker1', 'worker2']
+  become: yes
+
+- name: Set up RKE2 agent configuration file on worker nodes
+  ansible.builtin.template:
+    src: templates/rke2_agent_config.j2
+    dest: /etc/rancher/rke2/config.yaml
+  vars:
+    master_ip: "{{ hostvars['master1']['ansible_host'] }}"
+    master_token: "{{ lookup('file', '/var/lib/rancher/rke2/server/node-token') }}"
   when: inventory_hostname in ['worker1', 'worker2']
   become: yes
 
