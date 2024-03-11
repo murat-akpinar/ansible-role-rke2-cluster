@@ -26,6 +26,46 @@
   retries: 5
   delay: 10
 
+- name: Check if kubectl symbolic link already exists
+  ansible.builtin.stat:
+    path: /usr/local/bin/kubectl
+  register: kubectl_link
+
+- name: Find kubectl binary path
+  ansible.builtin.shell: find /var/lib/rancher/rke2/data/ -name kubectl | head -n 1
+  register: kubectl_binary_path
+  when: not kubectl_link.stat.exists
+
+- name: Create symbolic link for kubectl
+  ansible.builtin.shell: ln -s {{ kubectl_binary_path.stdout }} /usr/local/bin/kubectl
+  when: not kubectl_link.stat.exists and kubectl_binary_path.stdout != ''
+  become: yes
+
+- name: Set KUBECONFIG environment variable globally
+  ansible.builtin.lineinfile:
+    path: /etc/environment
+    line: 'KUBECONFIG="/etc/rancher/rke2/rke2.yaml"'
+    create: yes
+  become: yes
+
+- name: Ensure RKE2 directory exists on worker nodes
+  ansible.builtin.file:
+    path: /etc/rancher/rke2
+    state: directory
+    mode: '0755'
+  become: yes
+  when: inventory_hostname in ['worker1', 'worker2']
+
+- name: Check if RKE2 server is running
+  ansible.builtin.command: systemctl is-active rke2-server
+  register: rke2_server_status
+  failed_when: rke2_server_status.stdout != "active"
+  become: yes
+  when: inventory_hostname == 'master1'
+  retries: 5
+  delay: 10
+  until: rke2_server_status.stdout == "active"
+
 - name: Fetch RKE2 node token from master
   ansible.builtin.slurp:
     src: /var/lib/rancher/rke2/server/node-token
@@ -49,16 +89,6 @@
   vars:
     master_ip: "{{ hostvars['master1'].ansible_host }}"
     master_token: "{{ rke2_node_token.content | b64decode }}"
-  when: inventory_hostname in ['worker1', 'worker2']
-  become: yes
-
-- name: Set up RKE2 agent configuration file on worker nodes
-  ansible.builtin.template:
-    src: templates/rke2_agent_config.j2
-    dest: /etc/rancher/rke2/config.yaml
-  vars:
-    master_ip: "{{ hostvars['master1']['ansible_host'] }}"
-    master_token: "{{ lookup('file', '/var/lib/rancher/rke2/server/node-token') }}"
   when: inventory_hostname in ['worker1', 'worker2']
   become: yes
 
