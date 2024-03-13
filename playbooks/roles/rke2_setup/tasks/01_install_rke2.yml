@@ -13,7 +13,7 @@
   ansible.builtin.shell: |
     curl -sfL https://get.rke2.io | INSTALL_RKE2_TYPE=server sh -
   when: inventory_hostname == 'master1' and rke2_status.stdout.find("active") == -1
-  become: yes
+  become: true
   notify:
     - Restart rke2-server
 
@@ -24,14 +24,14 @@
     enabled: yes
     state: started
   when: inventory_hostname == 'master1'
-  become: yes
+  become: true
 
 - name: Wait for RKE2 server to become ready
   ansible.builtin.wait_for:
     path: /var/lib/rancher/rke2/server/node-token
     state: present
   when: inventory_hostname == 'master1'
-  become: yes
+  become: true
   retries: 5
   delay: 10
 
@@ -48,28 +48,28 @@
 - name: Create symbolic link for kubectl
   ansible.builtin.shell: ln -s {{ kubectl_binary_path.stdout }} /usr/local/bin/kubectl
   when: not kubectl_link.stat.exists and kubectl_binary_path.stdout != ''
-  become: yes
+  become: true
 
 - name: Set KUBECONFIG environment variable globally
   ansible.builtin.lineinfile:
     path: /etc/environment
     line: 'KUBECONFIG="/etc/rancher/rke2/rke2.yaml"'
     create: yes
-  become: yes
+  become: true
 
 - name: Ensure RKE2 directory exists on worker nodes
   ansible.builtin.file:
     path: /etc/rancher/rke2
     state: directory
     mode: '0755'
-  become: yes
+  become: true
   when: "'worker' in group_names"
 
 - name: Check if RKE2 server is running
   ansible.builtin.command: systemctl is-active rke2-server
   register: rke2_server_status
   failed_when: rke2_server_status.stdout != "active"
-  become: yes
+  become: true
   when: inventory_hostname == 'master1'
   retries: 5
   delay: 10
@@ -80,7 +80,7 @@
     src: /var/lib/rancher/rke2/server/node-token
   register: rke2_node_token
   when: inventory_hostname == 'master1'
-  become: yes
+  become: true
   run_once: true
 
 - name: Check if RKE2 agent is already installed
@@ -95,7 +95,7 @@
   ansible.builtin.shell: |
     curl -sfL https://get.rke2.io | INSTALL_RKE2_TYPE='agent' sh -
   when: "'worker' in group_names and rke2_agent_status.rc != 0"
-  become: yes
+  become: true
   notify:
     - Restart rke2-agent
 
@@ -108,7 +108,7 @@
     master_ip: "{{ hostvars['master1'].ansible_host }}"
     master_token: "{{ rke2_node_token.content | b64decode }}"
   when: "'worker' in group_names"
-  become: yes
+  become: true
 
 - name: Ensure RKE2 agent is enabled and running
   ansible.builtin.systemd:
@@ -116,7 +116,7 @@
     enabled: yes
     state: started
   when: "'worker' in group_names"
-  become: yes
+  become: true
 
 - name: Define the user name with UID 1000
   command: getent passwd 1000
