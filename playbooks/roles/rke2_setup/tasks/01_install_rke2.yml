@@ -54,7 +54,7 @@
     state: directory
     mode: '0755'
   become: yes
-  when: inventory_hostname in ['worker1', 'worker2']
+  when: "'worker' in group_names"
 
 - name: Check if RKE2 server is running
   ansible.builtin.command: systemctl is-active rke2-server
@@ -77,7 +77,7 @@
 - name: Install RKE2 on worker nodes
   ansible.builtin.shell: |
     curl -sfL https://get.rke2.io | INSTALL_RKE2_TYPE='agent' sh -
-  when: inventory_hostname in ['worker1', 'worker2']
+  when: "'worker' in group_names"
   become: yes
   notify:
     - Restart rke2-agent
@@ -89,7 +89,7 @@
   vars:
     master_ip: "{{ hostvars['master1'].ansible_host }}"
     master_token: "{{ rke2_node_token.content | b64decode }}"
-  when: inventory_hostname in ['worker1', 'worker2']
+  when: "'worker' in group_names"
   become: yes
 
 - name: Ensure RKE2 agent is enabled and running
@@ -97,5 +97,31 @@
     name: rke2-agent
     enabled: yes
     state: started
-  when: inventory_hostname in ['worker1', 'worker2']
+  when: "'worker' in group_names"
   become: yes
+
+- name: Create .kube directory for user with UID 1000
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/.kube"
+    state: directory
+    mode: '0755'
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  when: inventory_hostname in groups['master']
+
+- name: Copy rke2.yaml to user's kube config
+  ansible.builtin.copy:
+    src: /etc/rancher/rke2/rke2.yaml
+    dest: "/home/{{ ansible_user }}/.kube/config"
+    remote_src: yes
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0600'
+  when: inventory_hostname in groups['master']
+
+- name: Set KUBECONFIG environment variable for user
+  ansible.builtin.lineinfile:
+    path: "/home/{{ ansible_user }}/.bashrc"
+    line: 'export KUBECONFIG=/home/{{ ansible_user }}/.kube/config'
+    create: yes
+  when: inventory_hostname in groups['master']
