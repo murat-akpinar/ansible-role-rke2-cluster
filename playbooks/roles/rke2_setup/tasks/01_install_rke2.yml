@@ -1,13 +1,22 @@
 # Steps to install RKE2
 ---
 
+- name: Check rke2-server service status
+  ansible.builtin.shell: systemctl status rke2-server.service
+  register: rke2_status
+  changed_when: false
+  failed_when: false
+  ignore_errors: true
+  when: inventory_hostname == 'master1'
+
 - name: Install RKE2 on master node
   ansible.builtin.shell: |
     curl -sfL https://get.rke2.io | INSTALL_RKE2_TYPE=server sh -
-  when: inventory_hostname == 'master1'
+  when: inventory_hostname == 'master1' and rke2_status.stdout.find("active") == -1
   become: yes
   notify:
     - Restart rke2-server
+
 
 - name: Ensure RKE2 server is enabled and running
   ansible.builtin.systemd:
@@ -74,13 +83,22 @@
   become: yes
   run_once: true
 
+- name: Check if RKE2 agent is already installed
+  ansible.builtin.shell: systemctl status rke2-agent.service
+  register: rke2_agent_status
+  changed_when: false
+  failed_when: false
+  ignore_errors: true
+  when: "'worker' in group_names"
+
 - name: Install RKE2 on worker nodes
   ansible.builtin.shell: |
     curl -sfL https://get.rke2.io | INSTALL_RKE2_TYPE='agent' sh -
-  when: "'worker' in group_names"
+  when: "'worker' in group_names and rke2_agent_status.rc != 0"
   become: yes
   notify:
     - Restart rke2-agent
+
 
 - name: Set up RKE2 agent environment file on worker nodes
   ansible.builtin.template:
