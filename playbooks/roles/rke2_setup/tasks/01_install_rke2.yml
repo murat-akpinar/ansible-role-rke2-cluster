@@ -107,7 +107,7 @@
     mode: '0755'
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
-  when: inventory_hostname in groups['master']
+  when: inventory_hostname == 'master1'
 
 - name: Copy rke2.yaml to user's kube config
   ansible.builtin.copy:
@@ -117,11 +117,12 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
     mode: '0600'
-  when: inventory_hostname in groups['master']
+  when: inventory_hostname == 'master1'
 
 - name: Set KUBECONFIG environment variable for user
   ansible.builtin.lineinfile:
     path: "/home/{{ ansible_user }}/.bashrc"
     line: 'export KUBECONFIG=/home/{{ ansible_user }}/.kube/config'
     create: yes
-  when: inventory_hostname in groups['master']
+  when: inventory_hostname == 'master1'
+
