@@ -125,4 +125,3 @@
     line: 'export KUBECONFIG=/home/{{ ansible_user }}/.kube/config'
     create: yes
   when: inventory_hostname == 'master1'
-
