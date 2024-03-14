@@ -101,7 +101,7 @@ rke2-worker2   Ready    worker-2                    2m30s   v1.27.11+rke2r1
 # Yapı
 
 ```bash
-DevOps-EHKKKS-PROXMOX-ANSIBLE
+ansible-role-rke2-cluster
 ├── collections
 │   └── requirements.yml
 ├── inventory
