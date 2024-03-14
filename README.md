@@ -7,7 +7,7 @@ Ansible ile 1 Master 2 Worker Cluster ve üstüne metallb, longhorn
 - [X] install rke2
 - [X] Normal kullanıcı için kubectl komutlarını sudo eki olmadan çalıştırma.
 - [X] Worker nodelara role verme
-- [X] cluster connection
+- [X] Worker nodlar master node bağlanması
 - [ ] install metallb
 - [ ] install longhorn
 
