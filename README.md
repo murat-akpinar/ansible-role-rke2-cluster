@@ -1,13 +1,72 @@
-# ansible-role-rke2-cluster
-Ansible ile 1 Master 2 Worker Cluster ve üstüne metallb, longhorn
+#  Ansible Role: RKE2 Cluster
+![release](https://img.shields.io/badge/release-v1.0-blue)
+<img src="https://camo.githubusercontent.com/e8b5779608fb6e9487657a97573e6658fa8ad24ac193c00c4424bd5d83b818a1/68747470733a2f2f646f63732e726b65322e696f2f696d672f6c6f676f2d686f72697a6f6e74616c2d726b65322e737667" alt="RKE2" data-canonical-src="https://docs.rke2.io/img/logo-horizontal-rke2.svg" style="max-width: 100%;">
+# Ansible Role: RKE2 Cluster Kurulumu
 
-## To Do
+Bu Ansible rolü, otomatik olarak **RKE2** tabanlı Kubernetes kümesi kurulumunu gerçekleştirir. Kurulum, bir adet master ve birden fazla worker düğümünden oluşan bir yapıyı destekler.
 
-- [x] System Gereksinimlerini Sorgulama
-- [X] install rke2
-- [X] Normal kullanıcı için kubectl komutlarını sudo eki olmadan çalıştırma.
-- [X] Worker nodelara role verme
-- [X] Worker nodlar master node bağlanması
+## Önkoşullar
+
+- **Ansible** yüklü bir kontrol makinesi.
+- **SSH** erişimi olan ve sudo yetkisine sahip Linux tabanlı hedef sunucular.
+````bash
+ssh-copy-id -i ~/.ssh/mykey root@192.168.1.152
+ssh-copy-id -i ~/.ssh/mykey root@192.168.1.153
+ssh-copy-id -i ~/.ssh/mykey root@192.168.1.156
+````
+- Master ve Worker nodların hostnameleri bir birinden farklı olmalı. Hostnamectl komutu ile değiştirmeniz mümkün.
+````bash
+hostnamectl set-hostname
+````
+
+## Hızlı Başlangıç
+
+1. **Hosts Dosyasını Düzenle**: Projenin kök dizinindeki `hosts` dosyasını kendi ortamınıza göre ayarlayın. Örnek yapılandırma:
+
+```
+master1 ansible_host=192.168.1.152
+worker1 ansible_host=192.168.1.153
+worker2 ansible_host=192.168.1.156
+```
+
+2. **Envanter Dosyasını Düzenle**: Projenin kök dizinindeki `cluster_inventory.yml` dosyasını kendi ortamınıza göre ayarlayın. Örnek yapılandırma:
+
+```
+all:
+  children:
+    master:
+      hosts:
+        master1:
+          ansible_host: 192.168.1.152
+    worker:
+      hosts:
+        worker1:
+          ansible_host: 192.168.1.153
+        worker2:
+          ansible_host: 192.168.1.156
+
+```
+
+3. **Playbook'u Çalıştır**: Aşağıdaki komut ile Ansible playbook'unu çalıştırın:
+
+```bash
+ansible-playbook -i inventory/cluster_inventory.yml site.yml
+```
+
+## Yapılandırma
+
+`vars/main.yml` dosyasında bulunan değişkenleri kendi ihtiyaçlarınıza göre düzenleyebilirsiniz. Bu değişkenler, cluster kurulumu sırasında kullanılacak ayarları içerir.
+
+## Yapılacaklar
+
+### RKE Cluster Kurulumu
+- [x] Sistem Gereksinimlerinin Kontrol Edilmesi
+- [X] RKE2'nin Kurulumu
+- [X] Kubectl Komutlarının Normal Kullanıcılar Tarafından Sudo İhtiyacı Olmadan Çalıştırılması
+- [X] Worker Node'ların Master Node'a Bağlanması
+- [X] Worker Node'ların Rollendirilmesi
+
+### Ön Tanımlı Gelecek Paketler
 - [ ] install metallb
 - [ ] install longhorn
 
@@ -36,35 +95,8 @@ rke2-worker    Ready    worker-1                    2m40s   v1.27.11+rke2r1
 rke2-worker2   Ready    worker-2                    2m30s   v1.27.11+rke2r1
 ````
 
-````Bash
-Thursday 14 March 2024  00:35:44 +0300 (0:00:04.325)       0:04:14.554 ******** 
-=============================================================================== 
-Gathering Facts -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 1.21s
-rke2_setup : Check minimum CPU requirements ---------------------------------------------------------------------------------------------------------------------------------------------- 0.39s
-rke2_setup : Verify CPU count ------------------------------------------------------------------------------------------------------------------------------------------------------------ 0.07s
-rke2_setup : Check minimum RAM requirements ---------------------------------------------------------------------------------------------------------------------------------------------- 0.26s
-rke2_setup : Check minimum RAM requirements ---------------------------------------------------------------------------------------------------------------------------------------------- 0.29s
-rke2_setup : Install RKE2 on master node ------------------------------------------------------------------------------------------------------------------------------------------------ 12.47s
-rke2_setup : Ensure RKE2 server is enabled and running ---------------------------------------------------------------------------------------------------------------------------------- 83.54s
-rke2_setup : Wait for RKE2 server to become ready ---------------------------------------------------------------------------------------------------------------------------------------- 0.35s
-rke2_setup : Check if kubectl symbolic link already exists ------------------------------------------------------------------------------------------------------------------------------- 0.86s
-rke2_setup : Find kubectl binary path ---------------------------------------------------------------------------------------------------------------------------------------------------- 0.30s
-rke2_setup : Create symbolic link for kubectl -------------------------------------------------------------------------------------------------------------------------------------------- 0.23s
-rke2_setup : Set KUBECONFIG environment variable globally -------------------------------------------------------------------------------------------------------------------------------- 0.41s
-rke2_setup : Ensure RKE2 directory exists on worker nodes -------------------------------------------------------------------------------------------------------------------------------- 0.40s
-rke2_setup : Check if RKE2 server is running --------------------------------------------------------------------------------------------------------------------------------------------- 0.24s
-rke2_setup : Fetch RKE2 node token from master ------------------------------------------------------------------------------------------------------------------------------------------- 0.33s
-rke2_setup : Install RKE2 on worker nodes ----------------------------------------------------------------------------------------------------------------------------------------------- 63.74s
-rke2_setup : Set up RKE2 agent environment file on worker nodes -------------------------------------------------------------------------------------------------------------------------- 0.64s
-rke2_setup : Ensure RKE2 agent is enabled and running ----------------------------------------------------------------------------------------------------------------------------------- 49.70s
-rke2_setup : Define the user name with UID 1000 ------------------------------------------------------------------------------------------------------------------------------------------ 1.02s
-rke2_setup : Set user name variable from getent passwd output ---------------------------------------------------------------------------------------------------------------------------- 0.05s
-Playbook run took 0 days, 0 hours, 4 minutes, 14 seconds
-````
 
-
-
-## Forest
+# Yapı
 
 ```bash
 DevOps-EHKKKS-PROXMOX-ANSIBLE
