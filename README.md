@@ -2,6 +2,7 @@
 ![release](https://img.shields.io/badge/release-v1.0-blue)
 
 <img src="https://camo.githubusercontent.com/e8b5779608fb6e9487657a97573e6658fa8ad24ac193c00c4424bd5d83b818a1/68747470733a2f2f646f63732e726b65322e696f2f696d672f6c6f676f2d686f72697a6f6e74616c2d726b65322e737667" alt="RKE2" data-canonical-src="https://docs.rke2.io/img/logo-horizontal-rke2.svg" style="max-width: 100%;">
+
 # Ansible Role: RKE2 Cluster Kurulumu
 
 Bu Ansible rolü, otomatik olarak **RKE2** tabanlı Kubernetes kümesi kurulumunu gerçekleştirir. Kurulum, bir adet master ve birden fazla worker düğümünden oluşan bir yapıyı destekler.
