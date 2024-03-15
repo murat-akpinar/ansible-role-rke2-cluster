@@ -154,20 +154,9 @@
     create: yes
   when: inventory_hostname == 'master1' and uid_1000_user is defined
 
-- name: Label the Kubernetes nodes with specific roles
-  ansible.builtin.command:
-    cmd: kubectl label nodes {{ item.name }} node-role.kubernetes.io/{{ item.role }}=true --overwrite
-  loop:
-    - { name: 'rke2-worker', role: 'worker-1' }
-    - { name: 'rke2-worker2', role: 'worker-2' }
-  register: label_nodes_output
-  changed_when: "'labeled' in label_nodes_output.stdout"
-  failed_when: "label_nodes_output.rc != 0 and 'already has a value' not in label_nodes_output.stderr"
-  when: inventory_hostname == 'master1'
 - name: Gather hostnames of worker nodes
   ansible.builtin.set_fact:
     worker_hostnames: "{{ groups['worker'] | map('extract', hostvars, 'ansible_hostname') | list }}"
-
 
 - name: Label the Kubernetes nodes with specific roles
   ansible.builtin.command:
