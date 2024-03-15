@@ -48,8 +48,15 @@ all:
           ansible_host: 192.168.1.156
 
 ```
+3. 01_install_rke2.yml Düzenlenmesi
+`Label the Kubernetes nodes with specific roles` bölümünde kaç adet worker node olacaksa loop kısmı ona göre değiştirilmeli.
+```bash
+  loop:
+    - { name: '{{ worker_hostnames[0] }}', role: 'worker-1' }
+    - { name: '{{ worker_hostnames[1] }}', role: 'worker-2' }
+```
 
-3. **Playbook'u Çalıştır**: Aşağıdaki komut ile Ansible playbook'unu çalıştırın:
+4. **Playbook'u Çalıştır**: Aşağıdaki komut ile Ansible playbook'unu çalıştırın:
 
 ```bash
 ansible-playbook -i inventory/cluster_inventory.yml site.yml
@@ -67,7 +74,7 @@ ansible-playbook -i inventory/cluster_inventory.yml site.yml
 - [X] Kubectl Komutlarının Normal Kullanıcılar Tarafından Sudo İhtiyacı Olmadan Çalıştırılması
 - [X] Worker Node'ların Master Node'a Bağlanması
 - [X] Worker Node'ların Rollendirilmesi
-
+- [ ] hostname değiştirilmesi
 ### Ön Tanımlı Gelecek Paketler
 - [ ] install metallb
 - [ ] install longhorn
