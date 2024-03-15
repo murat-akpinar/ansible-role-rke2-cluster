@@ -67,7 +67,7 @@ ansible-playbook -i inventory/cluster_inventory.yml site.yml
 - [X] Kubectl Komutlarının Normal Kullanıcılar Tarafından Sudo İhtiyacı Olmadan Çalıştırılması
 - [X] Worker Node'ların Master Node'a Bağlanması
 - [X] Worker Node'ların Rollendirilmesi
-
+- [ ] hostname değiştirilmesi
 ### Ön Tanımlı Gelecek Paketler
 - [ ] install metallb
 - [ ] install longhorn
