@@ -1,7 +1,10 @@
 #  Ansible Role: RKE2 Cluster
 ![release](https://img.shields.io/badge/release-v1.0-blue)
+- Şuan sadece ubutnu 22.04 denedim fakat 'curl -sfL https://get.rke2.io | sh -' scripti ile kurduğu için sanırım diğer dağıtımlarda sorun olmayacaktır.
+
 
 <img src="https://camo.githubusercontent.com/e8b5779608fb6e9487657a97573e6658fa8ad24ac193c00c4424bd5d83b818a1/68747470733a2f2f646f63732e726b65322e696f2f696d672f6c6f676f2d686f72697a6f6e74616c2d726b65322e737667" alt="RKE2" data-canonical-src="https://docs.rke2.io/img/logo-horizontal-rke2.svg" style="max-width: 100%;">
+
 
 # Ansible Role: RKE2 Cluster Kurulumu
 
@@ -75,7 +78,7 @@ ansible-playbook -i inventory/cluster_inventory.yml site.yml
 - [X] Kubectl Komutlarının Normal Kullanıcılar Tarafından Sudo İhtiyacı Olmadan Çalıştırılması
 - [X] Worker Node'ların Master Node'a Bağlanması
 - [X] Worker Node'ların Rollendirilmesi
-- [ ] hostname değiştirilmesi
+
 ### Ön Tanımlı Gelecek Paketler
 - [ ] install metallb
 - [ ] install longhorn
@@ -94,9 +97,7 @@ Versions:
   - rke2 v1.27.11+rke2r1
   - metallb
   - longhorn
-  - grafana
 
-### 
 
 kubectl get nodes
 NAME           STATUS   ROLES                       AGE     VERSION
