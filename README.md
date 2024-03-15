@@ -48,7 +48,8 @@ all:
           ansible_host: 192.168.1.156
 
 ```
-3. 01_install_rke2.yml Düzenlenmesi
+3. **01_install_rke2.yml Düzenlenmesi**
+
 `Label the Kubernetes nodes with specific roles` bölümünde kaç adet worker node olacaksa loop kısmı ona göre değiştirilmeli.
 ```bash
   loop:
