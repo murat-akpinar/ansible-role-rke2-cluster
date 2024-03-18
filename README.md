@@ -89,7 +89,7 @@ ansible-playbook -i inventory/cluster_inventory.yml site.yml
  | | \ \|   <  __// /_  | |____| | |_| \__ \ ||  __/ |   
  |_|  \_\_|\_\___|____|  \_____|_|\__,_|___/\__\___|_|   
                                                          
-Rke2 Cluster / Ver: "1.0-ubuntu"  / Developped by: Murat Akpınar
+Rke2 Cluster / Ver: "1.0"  / Developped by: Murat Akpınar
 
 Versions:
   - rke2 v1.27.11+rke2r1
