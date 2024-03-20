@@ -1,10 +1,6 @@
 # Steps to install MetalLB
 ---
 
-- name: MetalLB Kurulumu ve Yapılandırılması
-  hosts: all
-  become: yes
-  tasks:
     - name: MetalLB için hedef dizinin oluşturulması
       ansible.builtin.file:
         path: /etc/kubernetes/metalLB
