@@ -1,1 +1,31 @@
 # Steps to install MetalLB
+---
+
+- name: Create MetalLB Namespace
+  kubernetes.core.k8s:
+    kind: Namespace
+    api_version: v1
+    metadata:
+      name: metallb-system
+    state: present
+
+- name: Apply MetalLB manifest
+  community.kubernetes.k8s:
+    state: present
+    src: https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
+
+- name: Configure MetalLB with IP range
+  kubernetes.core.k8s:
+    kind: ConfigMap
+    api_version: v1
+    metadata:
+      namespace: metallb-system
+      name: config
+    data:
+      config: |
+        address-pools:
+        - name: default
+          protocol: layer2
+          addresses:
+          - {{ metallb_ip_range }}
+    state: present

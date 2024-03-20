@@ -23,3 +23,17 @@
   changed_when: false
   failed_when: ram_size.stdout|int < 7937
 
+- name: Python 3 ve Pip'in Yüklenmesi
+  ansible.builtin.package:
+    name:
+      - python3
+      - python3-pip
+    state: present
+
+- name: PyYAML ve jsonpatch paketlerinin yüklenmesi
+  ansible.builtin.pip:
+    name:
+      - "PyYAML>=3.11"
+      - "jsonpatch"
+    state: present
+    executable: pip3
