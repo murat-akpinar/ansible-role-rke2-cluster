@@ -32,6 +32,7 @@
     - name: metallb.yaml'ın uygulanması (Eğer MetalLB Namespace'i yoksa)
       ansible.builtin.command:
         cmd: kubectl apply -f /etc/kubernetes/metalLB/metallb.yaml
+      ignore_errors: yes
       when: ns_check.rc != 0 and inventory_hostname == 'master1'
 
     - name: metallb-config.yaml'ın uygulanması
