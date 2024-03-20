@@ -116,8 +116,8 @@ ansible-role-rke2-cluster
 ├── playbooks
 │   └── roles
 │       └── rke2_setup
-│           ├── defaults
-│           │   └── main.yml
+│           ├── files
+│           │   └──.gitkeep
 │           ├── handlers
 │           │   └── main.yml
 │           ├── meta
