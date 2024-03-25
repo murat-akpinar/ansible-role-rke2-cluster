@@ -78,7 +78,7 @@ ansible-playbook -i inventory/cluster_inventory.yml site.yml
 - [X] Worker Node'ların Rollendirilmesi
 
 ### Ön Tanımlı Gelecek Paketler
-- [ ] install metallb
+- [X] install metallb
 - [ ] install longhorn
 
 ````bash
