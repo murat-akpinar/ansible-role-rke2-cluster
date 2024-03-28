@@ -1,0 +1,7 @@
+# Default values for Longhorn.
+# This is a minimal set of values that should be adjusted based on your environment.
+defaultSettings:
+  guaranteeEngineManagerCPU: "0.1"
+  guaranteeReplicaManagerCPU: "0.1"
+  defaultDataPath: "/var/lib/longhorn/"
+

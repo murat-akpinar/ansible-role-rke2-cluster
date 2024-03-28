@@ -1,0 +1,8 @@
+# Default values for MetalLB.
+configInline:
+  address-pools:
+  - name: default
+    protocol: layer2
+    addresses:
+    - "192.168.1.200/24"
+
