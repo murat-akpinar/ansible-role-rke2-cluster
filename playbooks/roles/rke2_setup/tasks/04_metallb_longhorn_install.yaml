@@ -10,13 +10,13 @@
 - name: Set home directory variable
   set_fact:
     user_home_directory: "{{ getent_passwd_output.stdout.split(':')[5] }}"
-  when: inventory_hostname == 'master1' and getent_passwd_output.stdout != "
+  when: inventory_hostname == 'master1' and getent_passwd_output.stdout != ''
 
 - name: Install MetalLB Helm chart
   ansible.builtin.command:
     chdir: "{{ user_home_directory }}/helm-charts/metallb"
     cmd: helm install metallb . --namespace metallb-system --create-namespace
-  when: inventory_hostname == 'master1' and getent_passwd_output.stdout != "" and user_home_directory is define
+  when: inventory_hostname == 'master1' and getent_passwd_output.stdout != "" and user_home_directory is defined
 
 - name: Install Longhorn Helm chart
   ansible.builtin.command:
