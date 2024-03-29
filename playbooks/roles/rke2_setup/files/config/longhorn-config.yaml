@@ -1,0 +1,5 @@
+defaultSettings:
+  backupTarget: "nfs://nfs-server:/path"
+  backupTargetCredentialSecret: "longhorn-backup-secret"
+  createDefaultDiskLabeledNodes: true
+  defaultDataPath: "/var/lib/longhorn/"

@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: longhorn-engine-service
-spec:
-  ports:
-    - port: 9500
-  selector:
-    app: longhorn-engine

@@ -12,14 +12,33 @@
     user_home_directory: "{{ getent_passwd_output.stdout.split(':')[5] }}"
   when: inventory_hostname == 'master1' and getent_passwd_output.stdout != ''
 
-- name: Install MetalLB Helm chart
+- name: Download MetalLB manifest
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/metallb/metallb/v0.14.4/config/manifests/metallb-native.yaml
+    dest: "{{ user_home_directory }}/config/metallb.yaml"
+  when: inventory_hostname == 'master1'
+
+- name: Apply MetalLB manifest
   ansible.builtin.command:
-    chdir: "{{ user_home_directory }}/helm-charts/metallb"
-    cmd: helm install metallb . --namespace metallb-system --create-namespace
-  when: inventory_hostname == 'master1' and getent_passwd_output.stdout != "" and user_home_directory is defined
+    cmd: kubectl apply -f {{ user_home_directory }}/config/metallb.yaml
+  when: inventory_hostname == 'master1'
+
+- name: Apply custom MetalLB ConfigMap
+  ansible.builtin.command:
+    cmd: kubectl apply -f {{ user_home_directory }}/config/metallb-config.yaml
+  when: inventory_hostname == 'master1'
+
+- name: Add Longhorn Helm repository
+  ansible.builtin.command:
+    cmd: helm repo add longhorn https://charts.longhorn.io
+  when: inventory_hostname == 'master1'
+
+- name: Update Helm repository list
+  ansible.builtin.command:
+    cmd: helm repo update
+  when: inventory_hostname == 'master1'
 
 - name: Install Longhorn Helm chart
   ansible.builtin.command:
-    chdir: "{{ user_home_directory }}/helm-charts/longhorn"
-    cmd: helm install longhorn . --namespace longhorn-system --create-namespace
-  when: inventory_hostname == 'master1' and getent_passwd_output.stdout != "" and user_home_directory is defined
+    cmd: helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace -f {{ user_home_directory }}/config/longhorn-values.yaml
+  when: inventory_hostname == 'master1'

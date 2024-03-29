@@ -1,5 +1,0 @@
-apiVersion: v2
-name: metallb
-description: A Helm chart for MetalLB on Kubernetes
-version: 1.0.0
-appVersion: "v0.13.3"
