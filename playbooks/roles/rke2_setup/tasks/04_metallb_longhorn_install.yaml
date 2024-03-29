@@ -40,5 +40,5 @@
 
 - name: Install Longhorn Helm chart
   ansible.builtin.command:
-    cmd: helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace -f {{ user_home_directory }}/config/longhorn-values.yaml
+    cmd: helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace -f {{ user_home_directory }}/config/longhorn-config.yaml
   when: inventory_hostname == 'master1'
