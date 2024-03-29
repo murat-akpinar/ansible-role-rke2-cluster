@@ -5,7 +5,7 @@
   command: getent passwd 1000
   register: getent_passwd_output
   changed_when: false
-  when: inventory_hostname == 'master1
+  when: inventory_hostname == 'master1'
 
 - name: Set home directory variable
   set_fact:
