@@ -3,14 +3,17 @@
 - name: "System requirements Check" 
   ansible.builtin.import_tasks: 00_system_requirements.yml
 
+- name: "Wellcome Message" 
+  ansible.builtin.import_tasks: 00_wellcome.yml
+
 - name: "Install RKE2" 
   ansible.builtin.import_tasks: 01_install_rke2.yml
 
-- name: "Install MetalLB" 
-  ansible.builtin.import_tasks: 02_install_metallb.yml
+- name: "File Transfer" 
+  ansible.builtin.import_tasks: 02_file_transfer.yml
 
-- name: "Install Longhorn" 
-  ansible.builtin.import_tasks: 03_install_longhorn.yml
+- name: "Install Helm" 
+  ansible.builtin.import_tasks: 03_install_helm.yml
 
-- name: "Wellcome Message" 
-  ansible.builtin.import_tasks: 04_wellcome.yml
+- name: "Helm Install" 
+  ansible.builtin.import_tasks: 04_metallb_longhorn_install.yaml

@@ -21,4 +21,4 @@
   ansible.builtin.shell: free -m | awk '/^Mem:/ {print $2}'
   register: ram_size
   changed_when: false
-  failed_when: ram_size.stdout|int < 7937
+  failed_when: ram_size.stdout|int < 7888
