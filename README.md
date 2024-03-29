@@ -79,7 +79,7 @@ ansible-playbook -i inventory/cluster_inventory.yml site.yml
 
 ### Ön Tanımlı Gelecek Paketler
 - [X] install metallb
-- [ ] install longhorn
+- [X] install longhorn
 
 ````bash
   _____  _        ___     _____ _           _            
@@ -117,17 +117,20 @@ ansible-role-rke2-cluster
 │   └── roles
 │       └── rke2_setup
 │           ├── files
-│           │   └──.gitkeep
+│           │   └──config
+│           │       └──longhorn-config.yaml
+│           │       └──metallb-config.yaml
 │           ├── handlers
 │           │   └── main.yml
 │           ├── meta
 │           │   └── main.yml
 │           ├── tasks
 │           │   ├── 00_system_requirements.yml
+│           │   ├── 00_wellcome.yml
 │           │   ├── 01_install_rke2.yml
-│           │   ├── 02_install_metallb.yml
-│           │   ├── 03_install_longhorn.yml
-│           │   ├── 04_wellcome.yml
+│           │   ├── 02_file_transfer.yml
+│           │   ├── 03_install_helm.yml
+│           │   ├── 04_metallb_longhorn_install.yaml
 │           │   └── main.yml
 │           ├── templates
 │           │   └── rke2_agent_config.j2
