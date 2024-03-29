@@ -1,5 +1,16 @@
 replicaCount: 1
 image:
-  repository: longhornio/longhorn-engine
-  pullPolicy: IfNotPresent
-  tag: "v1.1.0"
+  longhornManager:
+    repository: longhornio/longhorn-manager
+    tag: v1.1.2
+    pullPolicy: IfNotPresent
+  longhornUI:
+    repository: longhornio/longhorn-ui
+    tag: v1.1.2
+    pullPolicy: IfNotPresent
+
+service:
+  ui:
+    type: LoadBalancer
+    port: 80
+    targetPort: 8000

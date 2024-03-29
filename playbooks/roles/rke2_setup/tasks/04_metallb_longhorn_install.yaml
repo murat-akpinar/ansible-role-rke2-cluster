@@ -1,1 +1,25 @@
 # Steps to install Metallb & Longhorn
+---
+
+- name: Find home directory for UID 1000
+  command: getent passwd 1000
+  register: getent_passwd_output
+  changed_when: false
+  when: inventory_hostname == 'master1
+
+- name: Set home directory variable
+  set_fact:
+    user_home_directory: "{{ getent_passwd_output.stdout.split(':')[5] }}"
+  when: inventory_hostname == 'master1' and getent_passwd_output.stdout != "
+
+- name: Install MetalLB Helm chart
+  ansible.builtin.command:
+    chdir: "{{ user_home_directory }}/helm-charts/metallb"
+    cmd: helm install metallb . --namespace metallb-system --create-namespace
+  when: inventory_hostname == 'master1' and getent_passwd_output.stdout != "" and user_home_directory is define
+
+- name: Install Longhorn Helm chart
+  ansible.builtin.command:
+    chdir: "{{ user_home_directory }}/helm-charts/longhorn"
+    cmd: helm install longhorn . --namespace longhorn-system --create-namespace
+  when: inventory_hostname == 'master1' and getent_passwd_output.stdout != "" and user_home_directory is defined

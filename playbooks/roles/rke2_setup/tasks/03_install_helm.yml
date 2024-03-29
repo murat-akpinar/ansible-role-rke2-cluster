@@ -1,1 +1,15 @@
 # Steps to install helm
+---
+
+- name: Download Helm installation script
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    dest: /tmp/get_helm.sh
+    mode: '0700'
+  when: inventory_hostname == 'master1'
+
+- name: Install Helm
+  ansible.builtin.shell:
+    cmd: /tmp/get_helm.sh
+    creates: /usr/local/bin/helm
+  when: inventory_hostname == 'master1'
