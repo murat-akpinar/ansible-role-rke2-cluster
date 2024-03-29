@@ -38,12 +38,12 @@
     cmd: helm repo update
   when: inventory_hostname == 'master1'
 
-- name: Apply Longhorn UI Service definition
-  ansible.builtin.command:
-    cmd: kubectl apply -f {{ user_home_directory }}/config/longhorn-ui-service.yaml
-  when: inventory_hostname == 'master1'
-
 - name: Install Longhorn Helm chart
   ansible.builtin.command:
     cmd: helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace -f {{ user_home_directory }}/config/longhorn-config.yaml
+  when: inventory_hostname == 'master1'
+
+- name: Apply Longhorn UI Service definition
+  ansible.builtin.command:
+    cmd: kubectl apply -f {{ user_home_directory }}/config/longhorn-ui-service.yaml
   when: inventory_hostname == 'master1'
