@@ -1,3 +1,22 @@
 # Steps to File Transfer
 ---
+- name: Copy Helm charts to a specific user's home directory on master1
+  hosts: master1
+  become: true
+  tasks:
+    - name: Find home directory for UID 1000
+      command: getent passwd 1000
+      register: getent_passwd_output
+      changed_when: false
 
+    - name: Set home directory variable
+      set_fact:
+        user_home_directory: "{{ getent_passwd_output.stdout.split(':')[5] }}"
+
+    - name: Copy helm-charts directory to user's home directory
+      copy:
+        src: ./helm-charts/
+        dest: "{{ user_home_directory }}/helm-charts/"
+        owner: 1000
+        group: 1000
+        mode: '0755'
