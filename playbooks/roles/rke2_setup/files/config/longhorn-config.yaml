@@ -3,3 +3,7 @@ defaultSettings:
   backupTargetCredentialSecret: "longhorn-backup-secret"
   createDefaultDiskLabeledNodes: true
   defaultDataPath: "/var/lib/longhorn/"
+
+service:
+  ui:
+    type: LoadBalancer
