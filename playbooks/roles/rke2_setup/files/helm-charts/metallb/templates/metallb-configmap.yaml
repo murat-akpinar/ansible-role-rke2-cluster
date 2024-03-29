@@ -5,4 +5,4 @@ metadata:
   name: config
 data:
   config: |
-    {{- toYaml .Values.configInline | nindent 4 }}
+    {{ .Values.configInline | toYaml | indent 4 }}

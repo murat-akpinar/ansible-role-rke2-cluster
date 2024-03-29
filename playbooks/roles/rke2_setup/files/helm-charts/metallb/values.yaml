@@ -1,9 +1,3 @@
-replicaCount: 1
-image:
-  repository: metallb/speaker
-  pullPolicy: IfNotPresent
-  tag: "v0.9.6"
-
 configInline:
   address-pools:
     - name: default
