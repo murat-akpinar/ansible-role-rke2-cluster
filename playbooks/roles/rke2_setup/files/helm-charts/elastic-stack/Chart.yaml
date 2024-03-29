@@ -1,5 +1,0 @@
-apiVersion: v2
-name: elastic-stack
-description: Elastic Stack (ELK) combines Elasticsearch, Logstash, and Kibana for a powerful logging and monitoring solution.
-version: 1.0.0
-

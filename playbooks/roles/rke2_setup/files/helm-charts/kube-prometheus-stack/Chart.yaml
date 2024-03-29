@@ -1,5 +1,0 @@
-apiVersion: v2
-name: kube-prometheus-stack
-description: kube-prometheus-stack provides easy to operate end-to-end Kubernetes cluster monitoring with Prometheus using the Prometheus Operator.
-version: 1.0.0
-
