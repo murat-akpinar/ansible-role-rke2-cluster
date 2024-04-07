@@ -14,3 +14,8 @@
   ansible.builtin.command:
     cmd: helm install metallb metallb/metallb --namespace metallb-system --create-namespace -f {{ user_home_directory }}/my-charts/metallb/values.yaml
   when: inventory_hostname == 'master1'
+
+- name: Apply MetalLB ConfigMap
+  ansible.builtin.shell:
+    cmd: kubectl apply -f {{ user_home_directory }}/my-charts/metallb/metallb-config.yaml
+  when: inventory_hostname == 'master1'
