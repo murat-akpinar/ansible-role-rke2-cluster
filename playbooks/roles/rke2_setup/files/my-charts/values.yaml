@@ -1,0 +1,9 @@
+# Özel namespace belirtmek istiyorsanız
+namespace: longhorn-system
+defaultSettings:
+  replicaCount: 3
+  backupTarget: "s3://your-backup-bucket/"
+  backupTargetCredentialSecret: "your-credential-secret"
+service:
+  ui:
+    type: LoadBalancer
