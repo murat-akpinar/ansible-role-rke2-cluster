@@ -1,2 +1,16 @@
 # Steps to install Longhorn
 ---
+- name: Add Longhorn Helm repository
+  ansible.builtin.command:
+    cmd: helm repo add longhorn https://charts.longhorn.io
+  when: inventory_hostname == 'master1'
+
+- name: Update Helm repository list
+  ansible.builtin.command:
+    cmd: helm repo update
+  when: inventory_hostname == 'master1'
+
+- name: Install Longhorn Helm chart
+  ansible.builtin.command:
+    cmd: helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace -f {{ user_home_directory }}/my-charts/longhorn/values.yaml
+  when: inventory_hostname == 'master1'
