@@ -2,8 +2,14 @@
 namespace: longhorn-system
 defaultSettings:
   replicaCount: 3
-  backupTarget: "s3://your-backup-bucket/"
-  backupTargetCredentialSecret: "your-credential-secret"
 service:
   ui:
     type: LoadBalancer
+
+metallb:
+  configInline:
+    address-pools:
+    - name: default
+      protocol: layer2
+      addresses:
+      - 192.168.1.50-192.168.1.75
