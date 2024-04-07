@@ -1,4 +1,4 @@
-# Steps to install Metallb & Longhorn
+# Steps to install Longhorn
 ---
 
 - name: Find home directory for UID 1000
@@ -29,5 +29,10 @@
 
 - name: Apply Longhorn UI Service definition
   ansible.builtin.command:
-    cmd: kubectl apply -f {{ user_home_directory }}/config/longhorn-ui-service.yaml
+    cmd: kubectl apply -f {{ user_home_directory }}/config/longhorn-values.yaml
+  when: inventory_hostname == 'master1'
+
+- name: Patch Longhorn frontend service to LoadBalancer
+  ansible.builtin.shell:
+    cmd: kubectl patch svc longhorn-frontend -n longhorn-system -p '{"spec": {"type": "LoadBalancer"}}'
   when: inventory_hostname == 'master1'

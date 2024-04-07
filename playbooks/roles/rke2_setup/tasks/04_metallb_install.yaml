@@ -1,4 +1,4 @@
-# Steps to install Metallb & Longhorn
+# Steps to install Metallb
 ---
 
 - name: Find home directory for UID 1000
