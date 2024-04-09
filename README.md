@@ -12,7 +12,14 @@ Bu Ansible rolü, otomatik olarak **RKE2** tabanlı Kubernetes kümesi kurulumun
 
 ## Önkoşullar
 
-- **Ansible** yüklü bir kontrol makinesi.
+- **Ansible** ve galaxy, kubernetes collectionları yüklü olması.
+
+```bash
+ansible-galaxy collection install community.kubernetes
+ansible-galaxy collection install community.general
+
+```
+
 - **SSH** erişimi olan ve sudo yetkisine sahip Linux tabanlı hedef sunucular.
 ````bash
 ssh-copy-id -i ~/.ssh/mykey root@192.168.1.152
