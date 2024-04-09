@@ -22,7 +22,7 @@
 - name: Copy my-charts directory to user's home directory
   copy:
     src: ./my-charts/
-    dest: "{{ user_home_directory }}/my-chats/"
+    dest: "{{ user_home_directory }}/my-charts/"
     owner: 1000
     group: 1000
     mode: '0755'
