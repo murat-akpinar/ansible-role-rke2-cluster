@@ -17,7 +17,6 @@
   notify:
     - Restart rke2-server
 
-
 - name: Ensure RKE2 server is enabled and running
   ansible.builtin.systemd:
     name: rke2-server
@@ -98,7 +97,6 @@
   become: true
   notify:
     - Restart rke2-agent
-
 
 - name: Set up RKE2 agent environment file on worker nodes
   ansible.builtin.template:
