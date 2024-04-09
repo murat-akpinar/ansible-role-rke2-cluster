@@ -115,42 +115,44 @@ rke2-worker2   Ready    worker-2                    2m30s   v1.27.11+rke2r1
 # Yapı
 
 ```bash
-ansible-role-rke2-cluster
-├── collections
-│   └── requirements.yml
-├── inventory
-│   ├── cluster_inventory.yml
-├── playbooks
-│   └── roles
-│       └── rke2_setup
-│           ├── files
-│           │   └──config
-│           │       └──longhorn-config.yaml
-│           │       └──metallb-config.yaml
-│           ├── handlers
-│           │   └── main.yml
-│           ├── meta
-│           │   └── main.yml
-│           ├── tasks
-│           │   ├── 00_system_requirements.yml
-│           │   ├── 00_wellcome.yml
-│           │   ├── 01_install_rke2.yml
-│           │   ├── 02_file_transfer.yml
-│           │   ├── 03_install_helm.yml
-│           │   ├── 04_metallb_longhorn_install.yaml
-│           │   └── main.yml
-│           ├── templates
-│           │   └── rke2_agent_config.j2
-│           │   └── wellcome.j2
-│           └── vars
-│               ├── inventory
-│               └── test.yml
-│ 
-│
-├── .gitignore
+ansible-role-rke2-cluster/
 ├── ansible.cfg
+├── collections
+│   └── requirements.yml
 ├── hosts
+├── inventory
+│   └── cluster_inventory.yml
 ├── LICENSE
+├── playbooks
+│   └── roles
+│       └── rke2_setup
+│           ├── files
+│           │   └── my-charts
+│           │       ├── longhorn
+│           │       │   ├── homelab.longhorn.yaml
+│           │       │   └── values.yaml
+│           │       └── metallb
+│           │           ├── metallb-config.yaml
+│           │           └── metallb.yaml
+│           ├── handlers
+│           │   └── main.yml
+│           ├── meta
+│           ├── tasks
+│           │   ├── 00_system_requirements.yml
+│           │   ├── 00_wellcome.yml
+│           │   ├── 01_install_rke2.yml
+│           │   ├── 02_file_transfer.yml
+│           │   ├── 03_install_helm.yml
+│           │   ├── 04_metallb_install.yaml
+│           │   ├── 05_longhorn_install.yaml
+│           │   └── main.yml
+│           ├── templates
+│           │   ├── rke2_agent_config.j2
+│           │   └── wellcome.j2
+│           └── vars
+│               └── main.yml
 ├── README.md
 └── site.yml
+
+14 directories, 23 files
 ```
