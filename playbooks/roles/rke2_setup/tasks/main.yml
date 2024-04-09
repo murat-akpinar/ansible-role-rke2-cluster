@@ -15,3 +15,8 @@
 - name: "Install Helm" 
   ansible.builtin.import_tasks: 03_install_helm.yml
 
+- name: "Install Metallb" 
+  ansible.builtin.import_tasks: 04_metallb_install.yaml
+
+- name: "Install Longhorn" 
+  ansible.builtin.import_tasks: 05_longhorn_install.yaml
