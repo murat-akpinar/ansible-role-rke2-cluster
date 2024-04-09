@@ -8,8 +8,8 @@
   when: inventory_hostname == 'master1'
 
 - name: Update Helm repository list
-  community.kubernetes.helm:
-    command: repo_update
+  ansible.builtin.command:
+    cmd: helm repo update
   when: inventory_hostname == 'master1'
 
 - name: Install Longhorn Helm chart
