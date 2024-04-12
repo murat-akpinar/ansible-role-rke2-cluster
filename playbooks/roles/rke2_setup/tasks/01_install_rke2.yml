@@ -166,3 +166,13 @@
   changed_when: "'labeled' in label_nodes_output.stdout"
   failed_when: "label_nodes_output.rc != 0 and 'already has a value' not in label_nodes_output.stderr"
   when: inventory_hostname == 'master1'
+
+- name: Delete default ingress
+  ansible.builtin.command:
+    cmd: kubectl delete -n kube-system helmchart.helm.cattle.io/rke2-ingress-nginx
+  ignore_errors: true
+
+- name: Delete default ingress addon
+  ansible.builtin.command:
+    cmd: kubectl delete -n kube-system addon.k3s.cattle.io/rke2-ingress-nginx
+  ignore_errors: true
