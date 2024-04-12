@@ -16,4 +16,3 @@
   ansible.builtin.command:
     cmd: helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --create-namespace -f {{ user_home_directory }}/my-charts/longhorn/values.yaml
   when: inventory_hostname == 'master1'
-
