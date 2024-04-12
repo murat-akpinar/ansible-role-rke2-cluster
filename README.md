@@ -102,6 +102,7 @@ Versions:
   - rke2 v1.27.11+rke2r1
   - metallb
   - longhorn
+  - cert-manager
 
 
 kubectl get nodes
@@ -128,8 +129,11 @@ ansible-role-rke2-cluster/
 │       └── rke2_setup
 │           ├── files
 │           │   └── my-charts
+│           │       ├── cert-manager
+│           │       │   └── values.yaml
 │           │       ├── longhorn
 │           │       │   ├── homelab.longhorn.yaml
+│           │       │   ├── LoadBalancer.sh
 │           │       │   └── values.yaml
 │           │       └── metallb
 │           │           ├── metallb-config.yaml
@@ -145,6 +149,7 @@ ansible-role-rke2-cluster/
 │           │   ├── 03_install_helm.yml
 │           │   ├── 04_metallb_install.yaml
 │           │   ├── 05_longhorn_install.yaml
+│           │   ├── 06_cert_manager_install.yaml
 │           │   └── main.yml
 │           ├── templates
 │           │   ├── rke2_agent_config.j2
@@ -154,5 +159,5 @@ ansible-role-rke2-cluster/
 ├── README.md
 └── site.yml
 
-14 directories, 23 files
+15 directories, 26 files
 ```
