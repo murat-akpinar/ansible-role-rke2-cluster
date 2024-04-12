@@ -20,3 +20,7 @@
 
 - name: "Install Longhorn" 
   ansible.builtin.import_tasks: 05_longhorn_install.yaml
+
+- name: "Install Cert-Manager" 
+  ansible.builtin.import_tasks: 06_cert_manager_install.yaml
+
