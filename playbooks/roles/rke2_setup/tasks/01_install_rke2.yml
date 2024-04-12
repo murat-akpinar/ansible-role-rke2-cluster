@@ -171,8 +171,10 @@
   ansible.builtin.command:
     cmd: kubectl delete -n kube-system helmchart.helm.cattle.io/rke2-ingress-nginx
   ignore_errors: true
+  when: inventory_hostname == 'master1'
 
 - name: Delete default ingress addon
   ansible.builtin.command:
     cmd: kubectl delete -n kube-system addon.k3s.cattle.io/rke2-ingress-nginx
   ignore_errors: true
+  when: inventory_hostname == 'master1'
