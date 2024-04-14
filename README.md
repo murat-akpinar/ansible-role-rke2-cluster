@@ -87,6 +87,8 @@ ansible-playbook -i inventory/cluster_inventory.yml site.yml
 ### Ön Tanımlı Gelecek Paketler
 - [X] install metallb
 - [X] install longhorn
+- [X] install cert-manager
+- [X] install ingress-nginx
 
 ````bash
   _____  _        ___     _____ _           _            
