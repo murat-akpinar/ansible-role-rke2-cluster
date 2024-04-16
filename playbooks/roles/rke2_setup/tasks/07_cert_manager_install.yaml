@@ -10,7 +10,7 @@
 - name: Update Helm repository list
   ansible.builtin.command:
     cmd: helm repo update
-  when: inventory_hostname == 'master1
+  when: inventory_hostname == 'master1'
 
 - name: Install Cert-Manager Helm chart
   ansible.builtin.command:
