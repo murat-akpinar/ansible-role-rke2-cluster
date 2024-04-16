@@ -17,7 +17,7 @@
     cmd: helm install ingress-nginx ingress-nginx/ingress-nginx --namespace ingress-nginx --create-namespace -f {{ user_home_directory }}/my-charts/ingress/values.yaml
   when: inventory_hostname == 'master1'
 
-- name: Pause for 30 seconds to allow pods to start
+- name: Pause for 30 seconds to allow Ingress pods to start
   ansible.builtin.pause:
     seconds: 30
   when: inventory_hostname == 'master1'
