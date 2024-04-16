@@ -21,8 +21,3 @@
   ansible.builtin.command:
     cmd: kubectl apply -f {{ user_home_directory }}/my-charts/longhorn/homelab.longhorn.yaml
   when: inventory_hostname == 'master1'
-
-- name: LoadBalancer to longhorn-frontend
-  ansible.builtin.command:
-    cmd: bash {{ user_home_directory }}/my-charts/longhorn/LoadBalancer.sh
-  when: inventory_hostname == 'master1'
